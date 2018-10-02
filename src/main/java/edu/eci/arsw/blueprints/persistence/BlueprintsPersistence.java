@@ -6,7 +6,9 @@
 package edu.eci.arsw.blueprints.persistence;
 
 import edu.eci.arsw.blueprints.model.Blueprint;
+import edu.eci.arsw.blueprints.persistence.impl.Tuple;
 
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -33,5 +35,7 @@ public interface BlueprintsPersistence {
     public Blueprint getBlueprint(String author,String bprintname) throws BlueprintNotFoundException;
 
     public Set<Blueprint> getBlueprintByAuthor(String auth);
+
+    public Map<Tuple<String, String>, Blueprint> getAllBlueprints();
     
 }

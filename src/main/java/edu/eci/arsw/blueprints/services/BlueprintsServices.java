@@ -13,6 +13,8 @@ import edu.eci.arsw.blueprints.persistence.BlueprintsPersistence;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+
+import edu.eci.arsw.blueprints.persistence.impl.Tuple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,14 +26,14 @@ import org.springframework.stereotype.Service;
 public class BlueprintsServices {
    
     @Autowired
-    BlueprintsPersistence bpp=null;
+    BlueprintsPersistence bpp;
     
-    public void addNewBlueprint(Blueprint bp){
-        
+    public void addNewBlueprint(Blueprint bp) throws BlueprintPersistenceException {
+        bpp.saveBlueprint(bp);
     }
     
-    public Set<Blueprint> getAllBlueprints(){
-        return null;
+    public Map<Tuple<String, String>, Blueprint> getAllBlueprints(){
+        return bpp.getAllBlueprints();
     }
     
     /**
@@ -42,7 +44,7 @@ public class BlueprintsServices {
      * @throws BlueprintNotFoundException if there is no such blueprint
      */
     public Blueprint getBlueprint(String author,String name) throws BlueprintNotFoundException, BlueprintPersistenceException {
-       bpp.saveBlueprint(new Blueprint(author,name));
+       return bpp.getBlueprint(author,name);
     }
     
     /**
