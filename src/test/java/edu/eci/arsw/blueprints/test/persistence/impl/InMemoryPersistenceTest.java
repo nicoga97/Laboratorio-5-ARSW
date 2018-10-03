@@ -11,9 +11,12 @@ import edu.eci.arsw.blueprints.persistence.BlueprintNotFoundException;
 import edu.eci.arsw.blueprints.persistence.BlueprintPersistenceException;
 import edu.eci.arsw.blueprints.persistence.impl.InMemoryBlueprintPersistence;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import edu.eci.arsw.blueprints.persistence.impl.RedundanciesFilter;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -80,7 +83,7 @@ public class InMemoryPersistenceTest {
         Blueprint bp2=new Blueprint("john", "pepe",pts2);
         Point[] pts3=new Point[]{new Point(23, 43),new Point(56, 10)};
         Blueprint bp3=new Blueprint("juan", "coco",pts3);
-        HashSet<Blueprint> authorBlueprints = new HashSet<Blueprint>();
+        Collection<Blueprint> authorBlueprints = new HashSet<Blueprint>();
         authorBlueprints.add(bp1);
         authorBlueprints.add(bp2);
 
@@ -114,6 +117,16 @@ public class InMemoryPersistenceTest {
         }
 
         assertEquals(resultBp,bp1);
+    }
+
+    @Test
+    public void redundanciesFilterBpTest(){
+        RedundanciesFilter filter=new RedundanciesFilter();
+        Point[] pts1=new Point[]{new Point(0, 0),new Point(10, 10),new Point(10, 10),new Point(10, 10),new Point(1, 10)};
+        Point[] pts2=new Point[]{new Point(0, 0),new Point(10, 10),new Point(1, 10)};
+        Blueprint bp1=new Blueprint("john", "thepaint",pts1);
+
+        assertEquals(filter.filterBlueprint(bp1).getPoints().get(0),pts2);
     }
 
 
