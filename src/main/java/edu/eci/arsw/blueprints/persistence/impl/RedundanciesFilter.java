@@ -16,6 +16,7 @@ public class RedundanciesFilter implements BlueprintFilter {
     public Blueprint filterBlueprint(Blueprint bp) {
         for(int i=0;i<bp.getPoints().size();i++){
             List<Point> p=bp.getPoints();
+
             if(i>0 && p.get(i).getX()==p.get(i-1).getX()&& p.get(i).getY()==p.get(i-1).getY()){
                 bp.getPoints().remove(i);
             }

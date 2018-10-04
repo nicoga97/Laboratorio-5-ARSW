@@ -25,6 +25,7 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence {
 
     private final Map<Tuple<String, String>, Blueprint> blueprints = new HashMap<>();
 
+
     @Autowired
     private BlueprintFilter filter;
 
@@ -69,8 +70,12 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence {
     }
 
     @Override
-    public Collection< Blueprint> getAllBlueprints() {
+    public Collection<Blueprint> getAllBlueprints() {
         return filter.filterBlueprintSet(blueprints.values());
+    }
+
+    public void setFilter(BlueprintFilter filter) {
+        this.filter = filter;
     }
 
 
