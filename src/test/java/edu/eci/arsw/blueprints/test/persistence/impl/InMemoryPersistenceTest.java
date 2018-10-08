@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.eci.arsw.blueprints.persistence.impl.RedundanciesFilter;
+import edu.eci.arsw.blueprints.persistence.impl.SubsamplingFilter;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -144,10 +145,33 @@ public class InMemoryPersistenceTest {
         Blueprint bp1=new Blueprint("john", "thepaint",pts1);
         Blueprint bp2=new Blueprint("john", "thepaint",pts2);
         List<Point> pts3=fl.filterBlueprint(bp1).getPoints();
-        for(Point po:pts3){
-            System.out.println("");
+
+
+        for(int i=0;i<pts3.size();i++){
+            assertTrue(pts3.get(i).getX()== bp2.getPoints().get(i).getX());
+            assertTrue(pts3.get(i).getY()== bp2.getPoints().get(i).getY());
         }
-        assertEquals(pts3,bp2.getPoints());
+
+    }
+
+    @Test
+    public void subsamplingFilterBpTest() throws BlueprintPersistenceException, BlueprintNotFoundException {
+
+        InMemoryBlueprintPersistence ibpp=new InMemoryBlueprintPersistence();
+        SubsamplingFilter fl=new SubsamplingFilter();
+        ibpp.setFilter(fl);
+        Point[] pts1=new Point[]{new Point(0, 0),new Point(10, 10),new Point(11, 10),new Point(10, 10),new Point(1, 10)};
+        Point[] pts2=new Point[]{new Point(0, 0),new Point(11, 10),new Point(1, 10)};
+        Blueprint bp1=new Blueprint("john", "thepaint",pts1);
+        Blueprint bp2=new Blueprint("john", "thepaint",pts2);
+        List<Point> pts3=fl.filterBlueprint(bp1).getPoints();
+
+
+        for(int i=0;i<pts3.size();i++){
+            assertTrue(pts3.get(i).getX()== bp2.getPoints().get(i).getX());
+            assertTrue(pts3.get(i).getY()== bp2.getPoints().get(i).getY());
+        }
+
     }
 
 
