@@ -39,5 +39,7 @@ public interface BlueprintsPersistence {
     public Collection<Blueprint> getBlueprintByAuthor(String auth);
 
     public Collection<Blueprint> getAllBlueprints();
+
+    public void updateBlueprint(Blueprint bp,String auth,String name) throws BlueprintPersistenceException;
     
 }

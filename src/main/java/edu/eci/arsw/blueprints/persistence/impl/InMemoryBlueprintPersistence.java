@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * @author hcadavid
@@ -23,7 +25,7 @@ import java.util.*;
 @Service
 public class InMemoryBlueprintPersistence implements BlueprintsPersistence {
 
-    private final Map<Tuple<String, String>, Blueprint> blueprints = new HashMap<>();
+    private final ConcurrentMap<Tuple<String, String>, Blueprint> blueprints = new ConcurrentHashMap<>();
 
 
     @Autowired
@@ -33,7 +35,13 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence {
     public InMemoryBlueprintPersistence() {
         //load stub data
         Point[] pts = new Point[]{new Point(140, 140), new Point(115, 115)};
-        Blueprint bp = new Blueprint("_authorname_", "_bpname_ ", pts);
+        Blueprint bp = new Blueprint("pepe", "hola", pts);
+        blueprints.put(new Tuple<>(bp.getAuthor(), bp.getName()), bp);
+        pts = new Point[]{new Point(8, 6), new Point(7, 115)};
+        bp = new Blueprint("pepe", "chao", pts);
+        blueprints.put(new Tuple<>(bp.getAuthor(), bp.getName()), bp);
+        pts = new Point[]{new Point(54, 5), new Point(45, 64)};
+        bp = new Blueprint("pipo", "casa", pts);
         blueprints.put(new Tuple<>(bp.getAuthor(), bp.getName()), bp);
 
     }
@@ -72,6 +80,17 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence {
     @Override
     public Collection<Blueprint> getAllBlueprints() {
         return filter.filterBlueprintSet(blueprints.values());
+    }
+
+    @Override
+    public void updateBlueprint(Blueprint bp, String auth, String name) throws BlueprintPersistenceException {
+        if (blueprints.containsKey(new Tuple<>(bp.getAuthor(), bp.getName()))) {
+            blueprints.remove(new Tuple<>(auth, name));
+            blueprints.put(new Tuple<>(auth, name), bp);
+        } else {
+            throw new BlueprintPersistenceException("The given blueprint does not exists: " + bp);
+        }
+
     }
 
     public void setFilter(BlueprintFilter filter) {

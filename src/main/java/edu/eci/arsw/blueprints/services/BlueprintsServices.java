@@ -58,5 +58,9 @@ public class BlueprintsServices {
     public Collection<Blueprint> getBlueprintsByAuthor(String author) throws BlueprintNotFoundException{
         return bpp.getBlueprintByAuthor(author);
     }
+
+    public void updateBlueprint(Blueprint bp, String auth,String name) throws BlueprintPersistenceException {
+        bpp.updateBlueprint(bp,auth,name);
+    }
     
 }

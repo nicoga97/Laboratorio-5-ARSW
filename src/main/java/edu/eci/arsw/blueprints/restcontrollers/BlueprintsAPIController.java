@@ -40,6 +40,17 @@ public class BlueprintsAPIController {
         }
 
     }
+    @RequestMapping(value="/blueprints/{author}/{bpname}",method = RequestMethod.PUT)
+    public ResponseEntity<?> updateBlueprint(@RequestBody Blueprint b,@PathVariable("author") String auth,@PathVariable("bpname") String nam){
+        try {
+            service.updateBlueprint(b,auth,nam);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        } catch (BlueprintPersistenceException e) {
+            return new ResponseEntity<>(b, HttpStatus.BAD_REQUEST);
+        }
+
+
+    }
 
     @RequestMapping(value = "/blueprints/{author}/{name}")
     @ResponseBody
@@ -49,15 +60,18 @@ public class BlueprintsAPIController {
             if(bp!=null){
                 return new ResponseEntity<>(bp, HttpStatus.ACCEPTED);
             }else{
-                return new ResponseEntity<>(bp, HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(bp, HttpStatus.BAD_REQUEST);
             }
 
         } catch (BlueprintNotFoundException e) {
             Logger.getLogger(BlueprintsAPIController.class.getName()).log(Level.SEVERE, null, e);
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (BlueprintPersistenceException e) {
             Logger.getLogger(BlueprintsAPIController.class.getName()).log(Level.SEVERE, null, e);
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }catch(Exception e){
+            Logger.getLogger(BlueprintsAPIController.class.getName()).log(Level.SEVERE, null, e);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
     }

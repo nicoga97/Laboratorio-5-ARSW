@@ -1,0 +1,6 @@
+Qué condiciones de carrera se podrían presentar?
+Se podrian perentar condiciones de carrera cuando varios usuarios a la vez
+inetntaran crear o modificar un mismo plano.
+Cuales son las respectivas regiones críticas?
+la region critica identificada es el hashmap el cual guarda todos los planos por esto es que se cambio 
+a un map de tipo concurrentHashMap
